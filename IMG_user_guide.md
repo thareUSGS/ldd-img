@@ -29,13 +29,13 @@ List and explain any rules that apply to this class (e.g. from Schematron).
 ## 5	Definitions
 Give an alphabetical list of all classes and attributes with complete definitions. (Useful ones, not silly ones like “The map_projection_name attribute provides the name of the map projection.”)
 Include:
-•	Class or attribute name (indicate which it is; capitalize class names according to PDS4 standard)
-•	PDS4 data type (ASCII_Short_String_Collapsed, ASCII_Real, ASCII_Date, etc.)
-•	Definition in complete sentences
-•	Cardinality (minimum and maximum number of values permitted)
-•	Nillable, yes or no? Explain when it is appropriate to use a nil value
-•	Minimum and maximum numeric values, if applicable
-•	Minimum and maximum number of characters, if applicable
-•	List of valid values, if applicable.
+*	Class or attribute name (indicate which it is; capitalize class names according to PDS4 standard)
+*	PDS4 data type (ASCII_Short_String_Collapsed, ASCII_Real, ASCII_Date, etc.)
+*	Definition in complete sentences
+*	Cardinality (minimum and maximum number of values permitted)
+*	Nillable, yes or no? Explain when it is appropriate to use a nil value
+*	Minimum and maximum numeric values, if applicable
+*	Minimum and maximum number of characters, if applicable
+*	List of valid values, if applicable.
 ## 6	Examples
 Give one or more examples of label snippets for real products, annotated as appropriate. Make sure the examples can be successfully validated using the latest version of the PDS4 core dictionary and, of course, the dictionary described in this document.
