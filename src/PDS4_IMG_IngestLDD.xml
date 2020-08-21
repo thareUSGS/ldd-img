@@ -6548,7 +6548,7 @@
       <rule_message>IMG:error:detector_params_child_check: img:Detector must have at least 1 attribute or class specified.</rule_message>
     </DD_Rule_Statement>
   </DD_Rule>
-  
+
   <DD_Rule>
     <local_identifier>commanded_params_child_check</local_identifier>
     <rule_context>//img:Commanded_Parameters</rule_context>
@@ -6772,5 +6772,25 @@
       <rule_message>In img:Brightness_Correction_Image, Internal_Reference.reference_type must be equal to 'data_to_brightness_correction'.</rule_message>
     </DD_Rule_Statement>
   </DD_Rule>
-  
+
+  <DD_Rule>
+    <local_identifier>reference_type_check_detector</local_identifier>
+    <rule_context>img:Detector/pds:Internal_Reference</rule_context>
+    <DD_Rule_Statement>
+      <rule_type>Assert</rule_type>
+      <rule_test>pds:reference_type = 'data_to_detector'</rule_test>
+      <rule_message>In img:Detector, Internal_Reference.reference_type must be equal to 'data_to_detector'.</rule_message>
+    </DD_Rule_Statement>
+  </DD_Rule>
+
+  <DD_Rule>
+    <local_identifier>reference_type_check_hdre</local_identifier>
+    <rule_context>img:High_Dynamic_Range_Exposure/pds:Internal_Reference</rule_context>
+    <DD_Rule_Statement>
+      <rule_type>Assert</rule_type>
+      <rule_test>pds:reference_type = 'data_to_high_dynamic_range_exposure'</rule_test>
+      <rule_message>In img:High_Dynamic_Range_Exposure, Internal_Reference.reference_type must be equal to 'data_to_high_dynamic_range_exposure'.</rule_message>
+    </DD_Rule_Statement>
+  </DD_Rule>
+
 </Ingest_LDD>
