@@ -118,6 +118,8 @@
     - Added Image_Compression_Segment under JPEG_Parameters class
     - Renamed attribute bad_pixel_replacement_table to bad_pixel_replacement_table_id and updated definition
     - Add Special_Point class and special_line, special_sample attributes
+    - Add High_Dynamic_Range and High_Dynamic_Range_Exposure classes
+       and attibutes hdr_acquisition_mode, hdr_frame_count, hdr_clipping_threshold, exposure_time_delta
 
   </comment>
   <last_modification_date_time>2020-08-21T17:30:00Z</last_modification_date_time>
@@ -1250,7 +1252,22 @@
       </DD_Permissible_Value>
     </DD_Value_Domain>
   </DD_Attribute>
-  
+
+  <DD_Attribute>
+    <name>exposure_time_delta</name>
+    <version_id>1.0</version_id>
+    <local_identifier>exposure_time_delta</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies the change in exposure time for this exposure compared to the previous. 
+      Should be 0 for the first item in the list.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
   <DD_Attribute>
     <name>filter_id</name>
     <version_id>0.1</version_id>
@@ -3341,7 +3358,52 @@
     </DD_Value_Domain>
   </DD_Attribute>
 
-  
+  <DD_Attribute>
+    <name>hdr_acquisition_mode</name>
+    <version_id>1.0</version_id>
+    <local_identifier>hdr_acquisition_mode</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies how the HDR frames were acquired.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>true</enumeration_flag>
+      <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+      <DD_Permissible_Value>
+        <value>Single</value>
+        <value_meaning>Single exposure.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>Multiframe</value>
+        <value_meaning>HDR is processed using several separately-acquired images.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>Piecewise</value>
+        <value_meaning>HDR is processed onboard the camera.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>None</value>
+        <value_meaning>No HDR processing.</value_meaning>
+      </DD_Permissible_Value>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>hdr_frame_count</name>
+    <version_id>1.0</version_id>
+    <local_identifier>hdr_frame_count</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies the number of frames that go into the HDR product.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <minimum_value>0</minimum_value>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+
   <!--                   -->
   <!-- Attributes: END   -->
   <!--                   -->
@@ -3505,6 +3567,12 @@
     </DD_Association>
     <DD_Association>
       <identifier_reference>Dark_Current_Correction</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>High_Dynamic_Range</identifier_reference>
       <reference_type>component_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>1</maximum_occurrences>
@@ -3993,6 +4061,12 @@
     </DD_Association>
     <DD_Association>
       <identifier_reference>Dark_Current_Correction</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>High_Dynamic_Range</identifier_reference>
       <reference_type>component_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>1</maximum_occurrences>
@@ -6244,6 +6318,85 @@
       <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
   </DD_Class>  
+  
+  <!-- Class: High_Dynamic_Range -->
+  <DD_Class>
+    <name>High_Dynamic_Range</name>
+    <version_id>1.0</version_id>
+    <local_identifier>High_Dynamic_Range</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies parameters related to High Dynamic Range processing, which 
+      combines multiple exposures of different lengths into a single product with a 
+      greater dynamic range than any of the inputs.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+      <identifier_reference>Data_Processing</identifier_reference>
+      <reference_type>parent_of</reference_type>
+      <minimum_occurrences>1</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>hdr_acquisition_mode</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>1</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>  
+    <DD_Association>
+      <identifier_reference>hdr_frame_count</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>hdr_clipping_threshold</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>High_Dynamic_Range_Exposure</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+  
+   <!-- Class: High_Dynamic_Range_Exposure -->
+  <DD_Class>
+    <name>High_Dynamic_Range_Exposure</name>
+    <version_id>1.0</version_id>
+    <local_identifier>High_Dynamic_Range_Exposure</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies parameters for each individual exposure in an HDR image.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+      <identifier_reference>exposure_duration</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>  
+    <DD_Association>
+      <identifier_reference>exposure_duration_count</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>  
+    <DD_Association>
+      <identifier_reference>exposure_time_delta</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>pds.Internal_Reference</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
   <!--                   -->
   <!--   Classes: END    -->
   <!--                   -->
