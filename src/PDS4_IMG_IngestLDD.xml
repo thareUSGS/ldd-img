@@ -117,9 +117,10 @@
         auto_exposure_roi_first_line, auto_exposure_roi_first_sample attributes to Autoexposure
     - Added Image_Compression_Segment under JPEG_Parameters class
     - Renamed attribute bad_pixel_replacement_table to bad_pixel_replacement_table_id and updated definition
+    - Add Special_Point class and special_line, special_sample attributes
 
   </comment>
-  <last_modification_date_time>2020-08-19T17:30:00Z</last_modification_date_time>
+  <last_modification_date_time>2020-08-21T17:30:00Z</last_modification_date_time>
 
 
   <!--                     -->
@@ -2964,6 +2965,36 @@
   </DD_Attribute>
 
   <DD_Attribute>
+    <name>special_line</name>
+    <version_id>1.0</version_id>
+    <local_identifier>special_line</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Line number of the special point.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <minimum_value>0</minimum_value>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+  
+  <DD_Attribute>
+    <name>special_sample</name>
+    <version_id>1.0</version_id>
+    <local_identifier>special_sample</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Sample number of the special point.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <minimum_value>0</minimum_value>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
     <name>striping_count</name>
     <version_id>1.0</version_id>
     <local_identifier>striping_count</local_identifier>
@@ -4493,6 +4524,12 @@
       <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
     <DD_Association>
+      <identifier_reference>Special_Point</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
       <identifier_reference>pds.Internal_Reference</identifier_reference>
       <reference_type>component_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
@@ -5898,7 +5935,43 @@
       <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
   </DD_Class>
-  
+
+  <!-- Class: Special_Point -->
+  <DD_Class>
+    <name>Special_Point</name>
+    <version_id>1.0</version_id>
+    <local_identifier>Special_Point</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Defines a special point on the image detector, such as the location in 
+      pixel space that a co-boresighted instrument measures.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+        <identifier_reference>pds.name</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>pds.description</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>special_line</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>special_sample</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
   <!-- Class: Subframe  -->
   <DD_Class>
     <name>Subframe</name>
