@@ -117,10 +117,12 @@
         auto_exposure_roi_first_line, auto_exposure_roi_first_sample attributes to Autoexposure
     - Added Image_Compression_Segment under JPEG_Parameters class
     - Renamed attribute bad_pixel_replacement_table to bad_pixel_replacement_table_id and updated definition
-    - Add Special_Point class and special_line, special_sample attributes
-    - Add High_Dynamic_Range and High_Dynamic_Range_Exposure classes
+    - Added Special_Point class and special_line, special_sample attributes
+    - Added High_Dynamic_Range and High_Dynamic_Range_Exposure classes
        and attibutes hdr_acquisition_mode, hdr_frame_count, hdr_clipping_threshold, exposure_time_delta
-    - Add observation_number under Frame class and parameter_table_id under Detector class
+    - Added observation_number under Frame class and parameter_table_id under Detector class
+    - Added valid_minimum_pixel and valid_maximum_pixel under Autoexposure class
+    
   </comment>
   <last_modification_date_time>2020-08-21T17:30:00Z</last_modification_date_time>
 
@@ -1331,7 +1333,39 @@
       <unit_of_measure_type>Units_of_None</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
-  
+
+  <DD_Attribute>
+    <name>filter_window_line</name>
+    <version_id>1.0</version_id>
+    <local_identifier>filter_window_line</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The size in pixels of the window used for filtering in the 
+      line dimension. If the window varies across the image, this could contain 
+      the average window or initial window, as needed by the specific algorithm.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>filter_window_sample</name>
+    <version_id>1.0</version_id>
+    <local_identifier>filter_window_sample</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The size in pixels of the window used for filtering in the 
+      sample dimension. If the window varies across the image, this could contain 
+      the average window or initial window, as needed by the specific algorithm.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
   <DD_Attribute>
     <name>first_line</name>
     <version_id>1.0</version_id>
@@ -1594,7 +1628,7 @@
   
   <DD_Attribute>
     <name>frame_type_name</name>
-    <version_id>1.0</version_id>
+    <version_id>1.1</version_id>
     <local_identifier>frame_type_name</local_identifier>
     <nillable_flag>false</nillable_flag>
     <submitter_name>Elizabeth D. Rye</submitter_name>
@@ -1605,7 +1639,6 @@
       <enumeration_flag>true</enumeration_flag>
       <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
       <unit_of_measure_type>Units_of_None</unit_of_measure_type>
-      <!--
       <DD_Permissible_Value>
         <value>Mono</value>
         <value_meaning> image was commanded as a single left or right monoscopic image
@@ -1615,7 +1648,6 @@
         <value>Stereo</value>
         <value_meaning> image was commanded as part of a stereo pair </value_meaning>
       </DD_Permissible_Value>
-      -->
     </DD_Value_Domain>
   </DD_Attribute>
   
@@ -1701,8 +1733,68 @@
       <unit_of_measure_type>Units_of_None</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
-  
+ 
+   <DD_Attribute>
+    <name>hdr_acquisition_mode</name>
+    <version_id>1.0</version_id>
+    <local_identifier>hdr_acquisition_mode</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies how the HDR frames were acquired.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>true</enumeration_flag>
+      <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+      <DD_Permissible_Value>
+        <value>Single</value>
+        <value_meaning>Single exposure.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>Multiframe</value>
+        <value_meaning>HDR is processed using several separately-acquired images.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>Piecewise</value>
+        <value_meaning>HDR is processed onboard the camera.</value_meaning>
+      </DD_Permissible_Value>
+      <DD_Permissible_Value>
+        <value>None</value>
+        <value_meaning>No HDR processing.</value_meaning>
+      </DD_Permissible_Value>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
   <DD_Attribute>
+    <name>hdr_frame_count</name>
+    <version_id>1.0</version_id>
+    <local_identifier>hdr_frame_count</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies the number of frames that go into the HDR product.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <minimum_value>0</minimum_value>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>hdr_clipping_threshold</name>
+    <version_id>1.0</version_id>
+    <local_identifier>hdr_clipping_threshold</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies the threshold for pixel clipping.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <minimum_value>0</minimum_value>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+   <DD_Attribute>
     <name>height_pixels</name>
     <version_id>1.0</version_id>
     <local_identifier>height_pixels</local_identifier>
@@ -1940,7 +2032,71 @@
       <unit_of_measure_type>Units_of_None</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
+
+  <DD_Attribute>
+    <name>max_filter_window_line</name>
+    <version_id>1.0</version_id>
+    <local_identifier>max_filter_window_line</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The maximum size in pixels of the window used for filtering in the 
+      line dimension. If the window is constant across the image, filter_window_line 
+      should be used instead.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
   
+  <DD_Attribute>
+    <name>max_filter_window_sample</name>
+    <version_id>1.0</version_id>
+    <local_identifier>max_filter_window_sample</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The maximum size in pixels of the window used for filtering in the 
+      sample dimension. If the window is constant across the image, filter_window_sample 
+      should be used instead.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+  
+  <DD_Attribute>
+    <name>min_filter_window_line</name>
+    <version_id>1.0</version_id>
+    <local_identifier>min_filter_window_line</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The minimum size in pixels of the window used for filtering in the 
+      line dimension. If the window is constant across the image, filter_window_line 
+      should be used instead.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+  
+  <DD_Attribute>
+    <name>min_filter_window_sample</name>
+    <version_id>1.0</version_id>
+    <local_identifier>min_filter_window_sample</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The minimum size in pixels of the window used for filtering in the 
+      sample dimension. If the window is constant across the image, filter_window_sample 
+      should be used instead.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Real</value_data_type>
+      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
   <DD_Attribute>
     <name>motor_count</name>
     <version_id>1.0</version_id>
@@ -3152,7 +3308,35 @@
       <unit_of_measure_type>Units_of_Temperature</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
-  
+
+  <DD_Attribute>
+    <name>valid_maximum_pixel</name>
+    <version_id>1.0</version_id>
+    <local_identifier>valid_maximum_pixel</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent hare</submitter_name>
+    <definition>Specifies the maximum pixel DN value for pixels used by the autoexposure algorithm.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Integer</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>valid_minimum_pixel</name>
+    <version_id>1.0</version_id>
+    <local_identifier>valid_minimum_pixel</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Specifies the minimum DN threshold for pixels used by the autoexposure algorithm.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_Integer</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
   <DD_Attribute>
     <name>value_number</name>
     <version_id>1.0</version_id>
@@ -3276,102 +3460,6 @@
   </DD_Attribute>
 
   <DD_Attribute>
-    <name>filter_window_line</name>
-    <version_id>1.0</version_id>
-    <local_identifier>filter_window_line</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The size in pixels of the window used for filtering in the 
-      line dimension. If the window varies across the image, this could contain 
-      the average window or initial window, as needed by the specific algorithm.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-
-  <DD_Attribute>
-    <name>filter_window_sample</name>
-    <version_id>1.0</version_id>
-    <local_identifier>filter_window_sample</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The size in pixels of the window used for filtering in the 
-      sample dimension. If the window varies across the image, this could contain 
-      the average window or initial window, as needed by the specific algorithm.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-  
-  <DD_Attribute>
-    <name>max_filter_window_line</name>
-    <version_id>1.0</version_id>
-    <local_identifier>max_filter_window_line</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The maximum size in pixels of the window used for filtering in the 
-      line dimension. If the window is constant across the image, filter_window_line 
-      should be used instead.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-  
-  <DD_Attribute>
-    <name>max_filter_window_sample</name>
-    <version_id>1.0</version_id>
-    <local_identifier>max_filter_window_sample</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The maximum size in pixels of the window used for filtering in the 
-      sample dimension. If the window is constant across the image, filter_window_sample 
-      should be used instead.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-  
-  <DD_Attribute>
-    <name>min_filter_window_line</name>
-    <version_id>1.0</version_id>
-    <local_identifier>min_filter_window_line</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The minimum size in pixels of the window used for filtering in the 
-      line dimension. If the window is constant across the image, filter_window_line 
-      should be used instead.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-  
-  <DD_Attribute>
-    <name>min_filter_window_sample</name>
-    <version_id>1.0</version_id>
-    <local_identifier>min_filter_window_sample</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>The minimum size in pixels of the window used for filtering in the 
-      sample dimension. If the window is constant across the image, filter_window_sample 
-      should be used instead.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_Real</value_data_type>
-      <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-  
-  <DD_Attribute>
     <name>zoom_position</name>
     <version_id>1.0</version_id>
     <local_identifier>zoom_position</local_identifier>
@@ -3387,65 +3475,6 @@
     </DD_Value_Domain>
   </DD_Attribute>
 
-  <DD_Attribute>
-    <name>hdr_acquisition_mode</name>
-    <version_id>1.0</version_id>
-    <local_identifier>hdr_acquisition_mode</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>Specifies how the HDR frames were acquired.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>true</enumeration_flag>
-      <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
-      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
-      <DD_Permissible_Value>
-        <value>Single</value>
-        <value_meaning>Single exposure.</value_meaning>
-      </DD_Permissible_Value>
-      <DD_Permissible_Value>
-        <value>Multiframe</value>
-        <value_meaning>HDR is processed using several separately-acquired images.</value_meaning>
-      </DD_Permissible_Value>
-      <DD_Permissible_Value>
-        <value>Piecewise</value>
-        <value_meaning>HDR is processed onboard the camera.</value_meaning>
-      </DD_Permissible_Value>
-      <DD_Permissible_Value>
-        <value>None</value>
-        <value_meaning>No HDR processing.</value_meaning>
-      </DD_Permissible_Value>
-    </DD_Value_Domain>
-  </DD_Attribute>
-
-  <DD_Attribute>
-    <name>hdr_frame_count</name>
-    <version_id>1.0</version_id>
-    <local_identifier>hdr_frame_count</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>Specifies the number of frames that go into the HDR product.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
-      <minimum_value>0</minimum_value>
-      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
-
-  <DD_Attribute>
-    <name>hdr_clipping_threshold</name>
-    <version_id>1.0</version_id>
-    <local_identifier>hdr_clipping_threshold</local_identifier>
-    <nillable_flag>false</nillable_flag>
-    <submitter_name>Trent Hare</submitter_name>
-    <definition>Specifies the threshold for pixel clipping.</definition>
-    <DD_Value_Domain>
-      <enumeration_flag>false</enumeration_flag>
-      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
-      <minimum_value>0</minimum_value>
-      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
-    </DD_Value_Domain>
-  </DD_Attribute>
 
   
   <!--                   -->
@@ -3718,6 +3747,18 @@
     </DD_Association>
     <DD_Association>
       <identifier_reference>exposure_table_update_flag</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>valid_minimum_pixel</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>valid_maximum_pixel</identifier_reference>
       <reference_type>attribute_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>1</maximum_occurrences>
