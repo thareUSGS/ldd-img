@@ -124,6 +124,7 @@
     - Added valid_minimum_pixel and valid_maximum_pixel under Autoexposure class
     - Created Thumbnail, Row_Sum, Col_Sum, Reference_Pixel, Histogram classes and attributes added
         to Imaging and Commanded_Parameters class
+    - Added delta_focus_count attribute for Focus_Stack class
         
   </comment>
   <last_modification_date_time>2020-08-24T17:30:00Z</last_modification_date_time>
@@ -730,6 +731,21 @@
         <value>Grayscale</value>
         <value_meaning>indicates a grayscale image</value_meaning>
       </DD_Permissible_Value>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>delta_focus_count</name>
+    <version_id>1.0</version_id>
+    <local_identifier>delta_focus_count</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Defines the amount of change in focus for each image in the z-stack. The 
+      units should be the same as focus_position_count, which is often motor counts.</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
 
@@ -5312,7 +5328,7 @@
   <!-- Class: Focus_Stack  -->
   <DD_Class>
     <name>Focus_Stack</name>
-    <version_id>1.0</version_id>
+    <version_id>1.1</version_id>
     <local_identifier>Focus_Stack</local_identifier>
     <submitter_name>Cristina De Cesare</submitter_name>
     <definition>The Focus_Stack class contains attributes that describe a set of images
@@ -5341,6 +5357,12 @@
     </DD_Association>
     <DD_Association>
       <identifier_reference>focus_merge_registration_flag</identifier_reference>
+      <reference_type>attribute_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>delta_focus_count</identifier_reference>
       <reference_type>attribute_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>1</maximum_occurrences>
