@@ -122,9 +122,11 @@
        and attibutes hdr_acquisition_mode, hdr_frame_count, hdr_clipping_threshold, exposure_time_delta
     - Added observation_number under Frame class and parameter_table_id under Detector class
     - Added valid_minimum_pixel and valid_maximum_pixel under Autoexposure class
-    
+    - Created Thumbnail, Row_Sum, Col_Sum, Reference_Pixel, Histogram classes and attributes added
+        to Imaging and Commanded_Parameters class
+        
   </comment>
-  <last_modification_date_time>2020-08-21T17:30:00Z</last_modification_date_time>
+  <last_modification_date_time>2020-08-24T17:30:00Z</last_modification_date_time>
 
 
   <!--                     -->
@@ -959,6 +961,22 @@
     <DD_Value_Domain>
       <enumeration_flag>false</enumeration_flag>
       <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+      <unit_of_measure_type>Units_of_None</unit_of_measure_type>
+    </DD_Value_Domain>
+  </DD_Attribute>
+
+  <DD_Attribute>
+    <name>download_priority</name>
+    <version_id>1.0</version_id>
+    <local_identifier>download_priority</local_identifier>
+    <nillable_flag>false</nillable_flag>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>The download_priority attribute specifies which data to downlink/transmit, based on order of importance. 
+      The ranking and meaning of specific values will vary depending on the mission, and should be defined in the
+      mission software interface specification (SIS).</definition>
+    <DD_Value_Domain>
+      <enumeration_flag>false</enumeration_flag>
+      <value_data_type>ASCII_NonNegative_Integer</value_data_type>
       <unit_of_measure_type>Units_of_None</unit_of_measure_type>
     </DD_Value_Domain>
   </DD_Attribute>
@@ -3650,6 +3668,36 @@
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>*</maximum_occurrences>
     </DD_Association>
+    <DD_Association>
+      <identifier_reference>Thumbnail</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Row_Sum</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Col_Sum</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Reference_Pixel</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Histogram</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
   </DD_Class>
   
   <!-- Class: Autoexposure -->
@@ -4155,6 +4203,36 @@
       <reference_type>component_of</reference_type>
       <minimum_occurrences>0</minimum_occurrences>
       <maximum_occurrences>*</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Thumbnail</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Row_Sum</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Col_Sum</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Reference_Pixel</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+      <identifier_reference>Histogram</identifier_reference>
+      <reference_type>component_of</reference_type>
+      <minimum_occurrences>0</minimum_occurrences>
+      <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
   </DD_Class>
   
@@ -6010,7 +6088,109 @@
       <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
   </DD_Class>
-  
+
+  <!-- Class: Reference_Pixel -->
+  <DD_Class>
+    <name>Reference_Pixel</name>
+    <version_id>1.0</version_id>
+    <local_identifier>Reference_Pixel</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Describes a Reference Pixel product, which is a set of dark, non-imaging 
+      pixels used to monitor electronics.
+product_flag.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+        <identifier_reference>product_flag</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>download_priority</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>Onboard_Compression</identifier_reference>
+        <reference_type>component_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
+  <!-- Class: Histogram -->
+  <DD_Class>
+    <name>Histogram</name>
+    <version_id>1.0</version_id>
+    <local_identifier>Histogram</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Describes a Histogram product.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+        <identifier_reference>product_flag</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>download_priority</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
+  <!-- Class: Col_Sum -->
+  <DD_Class>
+    <name>Col_Sum</name>
+    <version_id>1.0</version_id>
+    <local_identifier>Col_Sum</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Describes a Column Summation product, which is a single row containing the sum of all 
+      pixels in each column of the image.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+        <identifier_reference>product_flag</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>download_priority</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
+  <!-- Class: Row_Sum -->
+  <DD_Class>
+    <name>Row_Sum</name>
+    <version_id>1.0</version_id>
+    <local_identifier>Row_Sum</local_identifier>
+    <submitter_name>Trent Hare</submitter_name>
+    <definition>Describes a Row Summation product, which is a single column containing the sum of all 
+      pixels in each row of the image.</definition>
+    <abstract_flag>false</abstract_flag>
+    <element_flag>false</element_flag>
+    <DD_Association>
+        <identifier_reference>product_flag</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>download_priority</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+  </DD_Class>
+
   <!-- Class: Sampling  -->
   <DD_Class>
     <name>Sampling</name>
@@ -6233,6 +6413,24 @@
     <DD_Association>
         <identifier_reference>product_flag</identifier_reference>
         <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>download_priority</identifier_reference>
+        <reference_type>attribute_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>Subframe</identifier_reference>
+        <reference_type>component_of</reference_type>
+        <minimum_occurrences>0</minimum_occurrences>
+        <maximum_occurrences>1</maximum_occurrences>
+    </DD_Association>
+    <DD_Association>
+        <identifier_reference>Onboard_Compression</identifier_reference>
+        <reference_type>component_of</reference_type>
         <minimum_occurrences>0</minimum_occurrences>
         <maximum_occurrences>1</maximum_occurrences>
     </DD_Association>
@@ -6778,8 +6976,8 @@
     <rule_context>img:Detector/pds:Internal_Reference</rule_context>
     <DD_Rule_Statement>
       <rule_type>Assert</rule_type>
-      <rule_test>pds:reference_type = 'data_to_detector'</rule_test>
-      <rule_message>In img:Detector, Internal_Reference.reference_type must be equal to 'data_to_detector'.</rule_message>
+      <rule_test>pds:reference_type = 'data_to_raw_source_product'</rule_test>
+      <rule_message>In img:Detector, Internal_Reference.reference_type must be equal to 'data_to_raw_source_product'.</rule_message>
     </DD_Rule_Statement>
   </DD_Rule>
 
@@ -6788,9 +6986,19 @@
     <rule_context>img:High_Dynamic_Range_Exposure/pds:Internal_Reference</rule_context>
     <DD_Rule_Statement>
       <rule_type>Assert</rule_type>
-      <rule_test>pds:reference_type = 'data_to_high_dynamic_range_exposure'</rule_test>
-      <rule_message>In img:High_Dynamic_Range_Exposure, Internal_Reference.reference_type must be equal to 'data_to_high_dynamic_range_exposure'.</rule_message>
+      <rule_test>pds:reference_type = 'data_to_raw_source_product'</rule_test>
+      <rule_message>In img:High_Dynamic_Range_Exposure, Internal_Reference.reference_type must be equal to 'data_to_raw_source_product'.</rule_message>
     </DD_Rule_Statement>
   </DD_Rule>
+
+  <!--DD_Rule>  ** Not needed for now
+    <local_identifier>reference_type_check_onboard_compression</local_identifier>
+    <rule_context>img:Onboard_Compression/pds:Internal_Reference</rule_context>
+    <DD_Rule_Statement>
+      <rule_type>Assert</rule_type>
+      <rule_test>pds:reference_type = 'data_to_ancillary_data'</rule_test>
+      <rule_message>In img:Onboard_Compression, Internal_Reference.reference_type must be equal to 'data_to_ancillary_data'.</rule_message>
+    </DD_Rule_Statement>
+  </DD_Rule-->
 
 </Ingest_LDD>
